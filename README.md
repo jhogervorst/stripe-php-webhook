@@ -4,7 +4,7 @@ Respond to [Stripe](https://stripe.com) webhooks like jQuery events — simple a
 
 ## Examples
 
-Event handlers can be added in jQuery style:
+Event handlers can be added in jQuery style using `S::on()`:
 
 ```php
 S::on('charge.succeeded', function($charge, $event) {
@@ -12,7 +12,7 @@ S::on('charge.succeeded', function($charge, $event) {
 });
 ```
 
-Use `onSecure` if you'd like to have the event data retrieved from Stripe:
+Use `S::onSecure()` if you'd like to have the event data retrieved from Stripe:
 
 ```php
 S::onSecure('charge.succeeded', function($charge, $event) {
