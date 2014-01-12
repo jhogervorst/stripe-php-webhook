@@ -2,7 +2,7 @@
 
 Respond to [Stripe](https://stripe.com) webhooks like jQuery events — simple and elegant.
 
-## Examples
+## Usage
 
 Event handlers can be added in jQuery style using `S::on()`:
 
@@ -32,7 +32,27 @@ S::on(['charge.succeeded', 'charge.failed'], function($charge, $event) {
 });
 ```
 
-## Usage
+## Examples
+
+Here are two examples from [handlers.php](handlers.php):
+
+```php
+// This handler sends a "Thank you" message when a charge was successful.
+S::on('charge.succeeded', function($charge) {
+	$customer = Stripe_Customer::retrieve($charge->customer);
+	mail($customer->email, 'Thanks you', 'Thanks for your payment! <3');
+});
+
+// This handler sends an angry message when a customer disputes a charge.
+// (You should probably not use this in production.)
+S::onSecure('charge.dispute.created charge.dispute.updated', function($dispute) {
+	$charge = Stripe_Charge::retrieve($dispute->charge);
+	$customer = Stripe_Customer::retrieve($charge->customer);
+	mail($customer->email, '#@%&@', 'WHY U DISPUTE?', $photo_of_dead_horse_head);
+});
+```
+
+## Installation
 
 1. Add (the code from) this repository to your project.
 2. Adjust the path to [stripe-php](https://github.com/stripe/stripe-php) and your Stripe API key in [webhook.php](webhook.php).
